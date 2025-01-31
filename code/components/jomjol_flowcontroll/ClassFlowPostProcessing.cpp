@@ -868,8 +868,8 @@ bool ClassFlowPostProcessing::doFlow(string zwtime) {
 
         if (NUMBERS[j]->checkDigitIncreaseConsistency) {
             if (flowDigit) {
-                if (flowDigit->getCNNType() != Digit) {
-                    ESP_LOGD(TAG, "checkDigitIncreaseConsistency = true - ignored due to wrong CNN-Type (not Digit Classification)");
+                if (flowDigit->getCNNType() != Digit && flowDigit->getCNNType() != DoubleHyprid10) {
+                    ESP_LOGD(TAG, "checkDigitIncreaseConsistency = true - ignored due to wrong CNN-Type [%d] (not Digit Classification)",flowDigit->getCNNType());
                 }
                 else {
                     NUMBERS[j]->Value = checkDigitConsistency(NUMBERS[j]->Value, NUMBERS[j]->DecimalShift, NUMBERS[j]->analog_roi != NULL, NUMBERS[j]->PreValue);
@@ -1113,7 +1113,7 @@ float ClassFlowPostProcessing::checkDigitConsistency(double input, int _decilams
     if (!_isanalog) {
         pot++;
     }
-	
+
     #ifdef SERIAL_DEBUG
         ESP_LOGD(TAG, "checkDigitConsistency: pot=%d, decimalshift=%d", pot, _decilamshift);
     #endif
